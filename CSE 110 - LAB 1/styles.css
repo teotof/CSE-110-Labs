@@ -8,6 +8,7 @@ body {
 
 .section1 {
     background-color: rgb(245, 240, 230);
+    max-width: 100%;
 }
 
 .section2 {
@@ -15,10 +16,12 @@ body {
     background-image: url(https://www.ucsd.edu/_resources/img/bg-orbs-1.jpg);
     background-position: center;
     background-size: cover;
+    max-width: 100%;
 }
 
 .section3 {
     background-color: rgb(245, 240, 230);
+    max-width: 100%;
 }
 
 .section1,
@@ -41,6 +44,7 @@ div {
     top: 0;
     background-color: white;
     width: 100%;
+    height: auto;
     padding-left: 10px
 }
 
@@ -102,8 +106,7 @@ li a:hover {
 
     ul li img {
         max-width: 75%;
-        height: auto;
-        float: left;
+        padding-top: 35px;
     }
 
     h2 {
