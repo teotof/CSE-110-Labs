@@ -1,6 +1,13 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
 .section1 {
     background-color: rgb(245, 240, 230);
-    max-width: 100%;
 }
 
 .section2 {
@@ -8,12 +15,16 @@
     background-image: url(https://www.ucsd.edu/_resources/img/bg-orbs-1.jpg);
     background-position: center;
     background-size: cover;
-    max-width: 100%
 }
 
 .section3 {
     background-color: rgb(245, 240, 230);
-    width: 100%;
+}
+
+.section1,
+.section2,
+.section3 {
+    padding: 10px;
 }
 
 h2 {
@@ -22,28 +33,32 @@ h2 {
 
 div {
     display: inline-block;
+    max-width: 100%;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    width: 100%;
+    padding-left: 10px
 }
 
 ul {
-    position: sticky;
-    top: 0;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background-color: white;
-    max-width: 400px;
 }
 
 ul img {
-    max-width: 100%;
+    max-width: 400px;
     height: auto;
     display: block;
-    margin: 0 auto;
+    margin: 0;
 }
 
 li {
-    float: left;
+    display: inline-block;
 }
 
 li a {
@@ -78,4 +93,28 @@ li a:hover {
     max-height: 500px;
     overflow-y: auto;
     box-sizing: border-box;
+}
+
+@media screen and (max-width: 800px) {
+    ul li a {
+        display: none;
+    }
+
+    ul li img {
+        max-width: 75%;
+        height: auto;
+        float: left;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 20px;
+    }
+
+    .wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
