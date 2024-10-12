@@ -1,14 +1,19 @@
+html,
 body {
-  margin: 20px;
-  background-color: lightgrey;
+  margin: 0px;
+  padding: 0px;
+  /* background-color: #eeeeee;*/
 }
 
 .app-container {
+  padding: 20px;
   grid-template-columns: 1fr;
+  height: calc(100vh - 40px);
 }
 
 @media (min-width: 600px) {
   .app-container {
+    height: calc(100vh - 40px);
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 20px;
@@ -65,6 +70,7 @@ input {
 }
 
 .note-form button {
+  width: 100%;
   border-radius: 5px;
   background-color: rgb(64, 154, 184);
   border: none;
