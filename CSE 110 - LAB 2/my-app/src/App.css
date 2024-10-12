@@ -58,6 +58,12 @@ body {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
+.notes-header button img {
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+}
+
 h2 {
   margin: 0;
 }

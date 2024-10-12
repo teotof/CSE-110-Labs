@@ -3,6 +3,8 @@ import { dummyNotesList } from "./constants"; // Import the dummyNotesList from 
 import { ToggleTheme, FavoriteNotes } from "./hooksExercise";
 import React, { useState, useEffect, useContext } from 'react';
 import { themes, ThemeContext } from "./themeContext";
+import EditIcon from './pencil.svg';
+import SaveIcon from './save.svg';
 import './App.css';
 
 function App() {
@@ -136,8 +138,12 @@ function App() {
                   isFavorite={favorites.has(note.title)}
                   onToggle={() => toggleFavorite(note.title)}
                 />
-                <button onClick={() => handleEditNote(note)}>Edit</button>
-                <button onClick={() => handleSaveChanges()}>Save</button>
+                <button onClick={() => handleEditNote(note)}>
+                  <img src={EditIcon} alt="Edit" />
+                </button>
+                <button onClick={() => handleSaveChanges()}>
+                  <img src={SaveIcon} alt="Save" />
+                </button>
                 <button onClick={() => handleDeleteNote(note.id)}>x</button>
               </div>
               {selectedNote && selectedNote.id === note.id ? (
