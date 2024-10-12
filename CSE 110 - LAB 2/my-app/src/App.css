@@ -2,7 +2,6 @@ html,
 body {
   margin: 0px;
   padding: 0px;
-  /* background-color: #eeeeee;*/
 }
 
 .app-container {
@@ -36,6 +35,7 @@ body {
   background-color: #f9f9f9;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  max-height: 290px;
 }
 
 .notes-header {
@@ -46,9 +46,16 @@ body {
 .notes-header button {
   font-size: 16px;
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   max-width: fit-content;
+  padding: 5px 10px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.notes-header button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 h2 {

@@ -16,7 +16,7 @@ function App() {
 
   const toggleFavorite = (noteTitle: string) => {
     setFavorites(prevFavorites => {
-      const newFavorites = new Set(prevFavorites); // Create a shallow copy
+      const newFavorites = new Set(prevFavorites);
       if (prevFavorites.has(noteTitle)) {
         newFavorites.delete(noteTitle);
       } else {
@@ -30,21 +30,87 @@ function App() {
     console.log("Favorites updated: ", Array.from(favorites));
   }, [favorites]);
 
+  const [notes, setNotes] = useState(dummyNotesList);
+  const initialNote = {
+    id: -1,
+    title: "",
+    content: "",
+    label: Label.other,
+  };
+  const [createNote, setCreateNote] = useState(initialNote);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(initialNote);
+
+  const createNoteHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const newNote = {
+      ...createNote,
+      id: notes.length + 1
+    };
+
+    setNotes(prevNotes => [newNote, ...prevNotes]);
+    setCreateNote({ ...initialNote });
+  };
+
+  const handleEditNote = (note: Note) => {
+    setSelectedNote(note);
+  };
+
+  const handleChange = (value: string, field: 'title' | 'content' | 'label') => {
+    if (selectedNote) {
+      setSelectedNote({
+        ...selectedNote,
+        [field]: field === 'label' ? value as Label : value
+      });
+    }
+  };
+
+  const handleSaveChanges = () => {
+    if (selectedNote) {
+      setNotes(prevNotes =>
+        prevNotes.map(note =>
+          note.id === selectedNote.id ? selectedNote : note
+        )
+      );
+      setSelectedNote(null);
+    }
+  };
+
+  const handleDeleteNote = (noteId: number) => {
+    setNotes(notes.filter(note => note.id !== noteId));
+  };
+
   return (
     <ThemeContext.Provider value={theme}>
       <div className='app-container' style={{ backgroundColor: theme.background, color: theme.foreground }}>
 
-        <form className="note-form">
-          <div><input placeholder="Note Title" style={{
-            backgroundColor: theme.noteBackground,
-            color: theme.foreground,
-            borderColor: theme.foreground
-          }}></input></div>
-          <div><textarea style={{
-            backgroundColor: theme.noteBackground,
-            color: theme.foreground,
-            borderColor: theme.foreground
-          }}></textarea></div>
+        <form className="note-form" onSubmit={createNoteHandler}>
+          <div><input placeholder="Note Title"
+            value={createNote.title}
+            onChange={(event) => setCreateNote({ ...createNote, title: event.target.value })}
+            style={{ backgroundColor: theme.noteBackground, color: theme.foreground, borderColor: theme.foreground }}
+            required>
+          </input>
+          </div>
+          <div><textarea value={createNote.content}
+            onChange={(event) => setCreateNote({ ...createNote, content: event.target.value })}
+            style={{ backgroundColor: theme.noteBackground, color: theme.foreground, borderColor: theme.foreground }}
+            required>
+          </textarea>
+          </div>
+
+          <div>
+            <select
+              onChange={(event) =>
+                setCreateNote({ ...createNote, label: event.target.value as Label })}
+              required>
+              <option value={Label.personal}>Personal</option>
+              <option value={Label.study}>Study</option>
+              <option value={Label.work}>Work</option>
+              <option value={Label.other}>Other</option>
+            </select>
+
+          </div>
 
           <div><button type="submit">Create Note</button></div>
           <ToggleTheme toggleTheme={toggleTheme} />
@@ -59,21 +125,55 @@ function App() {
         </form>
 
         <div className="notes-grid">
-          {dummyNotesList.map((note) => (
+          {notes.map((note) => (
             <div
               key={note.id}
               className="note-item"
               style={{ backgroundColor: theme.noteBackground, color: theme.foreground }}>
+
               <div className="notes-header">
                 <FavoriteNotes
                   isFavorite={favorites.has(note.title)}
                   onToggle={() => toggleFavorite(note.title)}
                 />
-                <button>x</button>
+                <button onClick={() => handleEditNote(note)}>Edit</button>
+                <button onClick={() => handleSaveChanges()}>Save</button>
+                <button onClick={() => handleDeleteNote(note.id)}>x</button>
               </div>
-              <h2> {note.title} </h2>
-              <p> {note.content} </p>
-              <p> {note.label} </p>
+              {selectedNote && selectedNote.id === note.id ? (
+                <>
+                  <div
+                    contentEditable
+                    suppressContentEditableWarning={true}
+                    onBlur={(e) => handleChange(e.target.innerText, 'title')}
+                  >
+                    {selectedNote.title}
+                  </div>
+                  <div
+                    contentEditable
+                    suppressContentEditableWarning={true}
+                    onBlur={(e) => handleChange(e.target.innerText, 'content')}
+                  >
+                    {selectedNote.content}
+                  </div>
+                  <select
+                    value={selectedNote.label}
+                    onChange={(e) => handleChange(e.target.value, 'label')}
+                    onBlur={() => handleSaveChanges()}
+                  >
+                    <option value={Label.personal}>Personal</option>
+                    <option value={Label.study}>Study</option>
+                    <option value={Label.work}>Work</option>
+                    <option value={Label.other}>Other</option>
+                  </select>
+                </>
+              ) : (
+                <>
+                  <h2>{note.title}</h2>
+                  <p>{note.content}</p>
+                  <p>{note.label}</p>
+                </>
+              )}
             </div>
           ))}
         </div>
