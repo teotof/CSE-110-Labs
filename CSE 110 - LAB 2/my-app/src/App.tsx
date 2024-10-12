@@ -9,20 +9,20 @@ import './App.css';
 
 function App() {
 
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favorites, setFavorites] = useState<Set<number>>(new Set<number>());
   const [theme, setTheme] = useState(themes.light);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === themes.light ? themes.dark : themes.light);
   };
 
-  const toggleFavorite = (noteTitle: string) => {
+  const toggleFavorite = (noteId: number) => {
     setFavorites(prevFavorites => {
       const newFavorites = new Set(prevFavorites);
-      if (prevFavorites.has(noteTitle)) {
-        newFavorites.delete(noteTitle);
+      if (prevFavorites.has(noteId)) {
+        newFavorites.delete(noteId);
       } else {
-        newFavorites.add(noteTitle);
+        newFavorites.add(noteId);
       }
       return newFavorites;
     });
@@ -71,7 +71,7 @@ function App() {
     if (selectedNote) {
       setNotes(prevNotes =>
         prevNotes.map(note =>
-          note.id === selectedNote.id ? selectedNote : note
+          note.id === selectedNote.id ? { ...note, ...selectedNote } : note
         )
       );
       setSelectedNote(null);
@@ -119,9 +119,10 @@ function App() {
           <div className="fav-list">
             <h2>Favorite List:</h2>
             <ul>
-              {Array.from(favorites).map(favorite => (
-                <li key={favorite}>{favorite}</li>
-              ))}
+              {Array.from(favorites).map(favoriteId => {
+                const note = notes.find(note => note.id === favoriteId);
+                return note ? <li key={favoriteId}>{note.title}</li> : null;
+              })}
             </ul>
           </div>
         </form>
@@ -135,8 +136,8 @@ function App() {
 
               <div className="notes-header">
                 <FavoriteNotes
-                  isFavorite={favorites.has(note.title)}
-                  onToggle={() => toggleFavorite(note.title)}
+                  isFavorite={favorites.has(note.id)}
+                  onToggle={() => toggleFavorite(note.id)}
                 />
                 <button onClick={() => handleEditNote(note)}>
                   <img src={EditIcon} alt="Edit" />
