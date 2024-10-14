@@ -2,6 +2,7 @@ html,
 body {
   margin: 0px;
   padding: 0px;
+  background-color: #eeeeee;
 }
 
 .app-container {
@@ -110,4 +111,29 @@ input {
 .edit-buttons button:last-of-type {
   background-color: rgb(220, 89, 89);
   color: white;
+}
+
+.App-body.todo-list {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.App-body.to-do-list h1 {
+  text-align: center;
+  width: 100%;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.list-item {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.items-bought {
+  text-align: center;
+  width: 100%;
+  font-family: 'Times New Roman', Times, serif;
 }
