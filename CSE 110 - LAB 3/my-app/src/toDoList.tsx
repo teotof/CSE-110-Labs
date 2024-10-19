@@ -13,22 +13,26 @@ export function ToDoList() {
 
     function handleCheckboxClick(e: React.ChangeEvent<HTMLInputElement>) {
         const checkbox: HTMLInputElement = e.target as HTMLInputElement;
-
         const itemName = checkbox.name;
 
-        const itemIndex = items.findIndex((item) => item.name === itemName);
-        items[itemIndex] = { name: itemName, isPurchased: checkbox.checked };
+        // Create a new array with the updated item status
+        const updatedItems = items.map((item) =>
+            item.name === itemName ? { ...item, isPurchased: checkbox.checked } : item
+        );
 
-        const uncheckedItems = items.filter((item) => !item.isPurchased);
-        const checkedItems = items.filter((item) => item.isPurchased);
+        // Separate unchecked and checked items to reorder them
+        const uncheckedItems = updatedItems.filter((item) => !item.isPurchased);
+        const checkedItems = updatedItems.filter((item) => item.isPurchased);
+        const reorderedItems = uncheckedItems.concat(checkedItems);
 
-        const newItems = uncheckedItems.concat(checkedItems);
+        // Update the state with the new reordered list
+        setItems(reorderedItems);
 
-        setItems(newItems);
+        // Calculate the new count of purchased items
+        const purchasedCount = reorderedItems.filter((item) => item.isPurchased).length;
 
-        const diff = checkbox.checked ? 1 : -1;
-
-        setNumRemainingItems(numRemainingItems + diff);
+        // Update the count of remaining items
+        setNumRemainingItems(purchasedCount);
     }
 
     return (
@@ -46,7 +50,7 @@ export function ToDoList() {
 
 function ListItem(item: GroceryItem, changeHandler: ChangeEventHandler) {
     return (
-        <div className="list-item">
+        <div className="list-item" key={item.name}>
             <input
                 type="checkbox"
                 onChange={changeHandler}

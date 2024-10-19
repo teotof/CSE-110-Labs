@@ -93,7 +93,7 @@ export const StickyNotes = () => {
                         required>
                     </input>
                     </div>
-                    <div><textarea value={createNote.content}
+                    <div><textarea placeholder="Note Content" value={createNote.content}
                         onChange={(event) => setCreateNote({ ...createNote, content: event.target.value })}
                         style={{ backgroundColor: theme.noteBackground, color: theme.foreground, borderColor: theme.foreground }}
                         required>
@@ -138,17 +138,24 @@ export const StickyNotes = () => {
                                     isFavorite={favorites.has(note.id)}
                                     onToggle={() => toggleFavorite(note.id)}
                                 />
-                                <button onClick={() => handleEditNote(note)}>
+                                <button onClick={() => handleEditNote(note)}
+                                    data-testid={`edit-note-${note.id}`}>
                                     <img src={EditIcon} alt="Edit" />
                                 </button>
-                                <button onClick={() => handleSaveChanges()}>
+                                <button onClick={() => handleSaveChanges()}
+                                    data-testid={`save-note-${note.id}`}>
                                     <img src={SaveIcon} alt="Save" />
                                 </button>
-                                <button onClick={() => handleDeleteNote(note.id)}>x</button>
+                                <button data-testid={`delete-note-${note.id}`}
+                                    onClick={() => handleDeleteNote(note.id)}
+                                >
+                                    x
+                                </button>
                             </div>
                             {selectedNote && selectedNote.id === note.id ? (
                                 <>
                                     <div
+                                        data-testid={`note-title-${note.id}`}
                                         contentEditable
                                         suppressContentEditableWarning={true}
                                         onBlur={(e) => handleChange(e.target.innerText, 'title')}
@@ -156,6 +163,7 @@ export const StickyNotes = () => {
                                         {selectedNote.title}
                                     </div>
                                     <div
+                                        data-testid={`note-content-${note.id}`}
                                         contentEditable
                                         suppressContentEditableWarning={true}
                                         onBlur={(e) => handleChange(e.target.innerText, 'content')}
@@ -163,6 +171,7 @@ export const StickyNotes = () => {
                                         {selectedNote.content}
                                     </div>
                                     <select
+                                        data-testid={`note-label-${note.id}`}
                                         value={selectedNote.label}
                                         onChange={(e) => handleChange(e.target.value, 'label')}
                                         onBlur={() => handleSaveChanges()}
@@ -175,9 +184,9 @@ export const StickyNotes = () => {
                                 </>
                             ) : (
                                 <>
-                                    <h2>{note.title}</h2>
-                                    <p>{note.content}</p>
-                                    <p>{note.label}</p>
+                                    <h2 data-testid={`note-title-${note.id}`}>{note.title}</h2>
+                                    <p data-testid={`note-content-${note.id}`}>{note.content}</p>
+                                    <p data-testid={`note-label-${note.id}`}>{note.label}</p>
                                 </>
                             )}
                         </div>
